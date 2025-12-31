@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New year surprise only for you 💖</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  overflow: hidden;
+}
+
+.page {
+  display: none;
+  height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.page.active {
+  display: block;
+}
+
+button {
+  margin-top: 30px;
+  padding: 12px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 25px;
+  background: pink;
+}
+
+input {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+}
+
+.letter {
+  background: rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.slideshow img {
+  width: 90%;
+  max-width: 350px;
+  border-radius: 15px;
+  display: none;
+}
+
+.slideshow img.active {
+  display: block;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.love-text {
+  font-size: 42px;
+  color: pink;
+  text-shadow: 0 0 30px red;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="fireworks"></canvas>
+
+<!-- 🔐 PAGE 1: PASSWORD -->
+<div class="page active" id="page1">
+  <h2>🔐 Enter Password</h2>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="unlock()">Unlock ❤️</button>
+</div>
+
+<!-- 🎉 PAGE 2: WISHES -->
+<div class="page" id="page2">
+  <h1>🎉 Happy New Year 2025 🎉</h1>
+  <h2>For my dearest bava ❤️🫂</h2>
+  <p>
+    May this year bring us endless love,  
+    beautiful memories and a lifetime together 💕
+  </p>
+  <button onclick="nextPage(2)">Next ➡️</button>
+</div>
+
+<!-- 💌 PAGE 3: LETTER -->
+<div class="page" id="page3">
+  <div class="letter">
+    <h2>💌 My Letter</h2>
+    <p>
+      My dear KANNAYA ❤️,<br><br>
+      Ee year naku chala memories ichindi,  
+      kani andulo naa favorite memory nuvve ❤️<br><br>
+
+      Nee support, nee care,  
+      naa bad times lo kuda  
+      naa pakkane undadam…  
+      anni naku chala precious.<br><br>
+
+      Nuvvu unte nenu strong ga feel avthanu,  
+      happy ga untanu, safe ga untanu 🤍<br><br>
+      
+      
+      Nuvvu naaku heart kadhu nanna, naa soul nuvvu 💞<br><br>
+      
+      
+      Nv natho premaga day lo okkasari matladuthe chalu bangaram nen inka day antha aadhe happiness tho unta🫂<br><br>
+      
+      SORRY bava and THANK YOU bava nen chese mistakes ni kuda rectify chesthuu yeppudu naaku oka mentor ga unnav😘<br><br>
+      
+
+      Happy New Year my love 💕<br>
+      — Yours, BUJJI THALLI ❤️
+    </p>
+  </div>
+  <button onclick="nextPage(3)">Next ➡️</button>
+</div>
+
+<!-- 📸 PAGE 4: MEMORIES -->
+<div class="page" id="page4">
+  <h2>📸 Our Memories</h2>
+  <div class="slideshow">
+    <img src="photo1.jpg" class="active">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+    <img src="photo4.jpg">
+    <img src="photo5.jpg">
+  </div>
+  <button onclick="nextPage(4)">Next ➡️</button>
+</div>
+
+<!-- ❤️ PAGE 5: LOVE -->
+<div class="page" id="page5">
+  <h1 class="love-text">I LOVE YOU FOREVER BUJJITHANDRI ❤️</h1> Life long naatho ilane undu kannaya nen ninnu natho matladaku annapudu laagi petti kotti chepu nanna(nv naa pilla vi nen endhuku matladanu anesi)🤌<br><br
+</div>
+
+<script>
+function unlock() {
+  if (document.getElementById("password").value === "love you forever") {
+    nextPage(1);
+    document.getElementById("music").play();
+  } else {
+    alert("Wrong password 💔");
+  }
+}
+
+function nextPage(n) {
+  document.getElementById("page" + n).classList.remove("active");
+  document.getElementById("page" + (n + 1)).classList.add("active");
+}
+
+// slideshow
+let slides = document.querySelectorAll(".slideshow img");
+let i = 0;
+setInterval(() => {
+  slides[i].classList.remove("active");
+  i = (i + 1) % slides.length;
+  slides[i].classList.add("active");
+}, 2500);
+
+// fireworks
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+let particles = [];
+
+function Particle(x,y){
+  this.x=x; this.y=y;
+  this.vx=Math.random()*6-3;
+  this.vy=Math.random()*6-3;
+  this.life=100;
+  this.color=`hsl(${Math.random()*360},100%,50%)`;
+}
+
+function firework(){
+  let x=Math.random()*canvas.width;
+  let y=Math.random()*canvas.height/2;
+  for(let i=0;i<30;i++) particles.push(new Particle(x,y));
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(Math.random()<0.05) firework();
+  particles.forEach((p,i)=>{
+    ctx.fillStyle=p.color;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,3,0,Math.PI*2);
+    ctx.fill();
+    p.x+=p.vx; p.y+=p.vy; p.life--;
+    if(p.life<=0) particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
